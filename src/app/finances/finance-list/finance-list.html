@@ -1,1 +1,53 @@
-<p>finance-list works!</p>
+<div class="finance-container">
+  <h2>Your Finances</h2>
+  <button (click)="logout()" class="logout-button">Logout</button>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <h3>Add New Finance Entry</h3>
+  <form (ngSubmit)="addFinance()">
+    <div class="form-group">
+      <label for="date">Date:</label>
+      <input type="date" id="date" [(ngModel)]="newFinance.date" name="date" required>
+    </div>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <input type="text" id="description" [(ngModel)]="newFinance.description" name="description" required>
+    </div>
+    <div class="form-group">
+      <label for="amount">Amount:</label>
+      <input type="number" id="amount" [(ngModel)]="newFinance.amount" name="amount" required>
+    </div>
+    <div class="form-group">
+      <label for="type">Type:</label>
+      <select id="type" [(ngModel)]="newFinance.type" name="type" required>
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
+    </div>
+    <button type="submit">Add Finance</button>
+  </form>
+
+  <h3>Finance List</h3>
+  <table class="finance-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let finance of finances">
+        <td>{{ finance.date | date:'shortDate' }}</td>
+        <td>{{ finance.description }}</td>
+        <td>{{ finance.amount | currency:'USD' }}</td>
+        <td>{{ finance.type }}</td>
+      </tr>
+      <tr *ngIf="finances.length === 0">
+        <td colspan="4">No finance entries yet.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
