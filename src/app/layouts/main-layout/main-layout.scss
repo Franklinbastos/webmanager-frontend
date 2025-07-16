@@ -1,0 +1,48 @@
+.main-container {
+  display: flex;
+}
+
+.main-content {
+  flex-grow: 1;
+  transition: margin-left 0.3s ease;
+  margin-left: 0;
+}
+
+.main-content.sidenav-open {
+  margin-left: 250px; /* Same as sidenav width */
+}
+
+.main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #333; /* Cinza escuro */
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1000;
+}
+
+.main-header.sidenav-open {
+  left: 250px;
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.page-title {
+  margin: 0 auto;
+}
+
+.content-area {
+  margin-top: 60px; /* Height of the header */
+  padding: 20px;
+}

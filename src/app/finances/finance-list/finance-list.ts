@@ -15,6 +15,7 @@ export class FinanceListComponent implements OnInit {
   finances: Finance[] = [];
   newFinance: Finance = { date: new Date(), description: '', amount: 0, type: 'expense' };
   errorMessage: string = '';
+  showAddForm: boolean = false;
 
   constructor(private apiService: ApiService, private router: Router) { }
 
@@ -53,8 +54,9 @@ export class FinanceListComponent implements OnInit {
     });
   }
 
-  logout(): void {
-    localStorage.removeItem('authToken');
-    this.router.navigate(['/login']);
+  
+
+  toggleAddForm(): void {
+    this.showAddForm = !this.showAddForm;
   }
 }
