@@ -12,10 +12,6 @@
           <input type="date" id="date" [(ngModel)]="newFinance.date" name="date" required>
         </div>
         <div class="form-group">
-          <label for="description">Description:</label>
-          <input type="text" id="description" [(ngModel)]="newFinance.description" name="description" required>
-        </div>
-        <div class="form-group">
           <label for="amount">Amount:</label>
           <input type="number" id="amount" [(ngModel)]="newFinance.amount" name="amount" required>
         </div>
@@ -25,6 +21,10 @@
             <option value="income">Income</option>
             <option value="expense">Expense</option>
           </select>
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea id="description" [(ngModel)]="newFinance.description" name="description" required rows="3"></textarea>
         </div>
         <button type="submit">Add Finance</button>
       </form>
@@ -38,18 +38,30 @@
             <th>Date</th>
             <th>Description</th>
             <th>Amount</th>
-            <th>Type</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let finance of finances">
-            <td>{{ finance.date | date:'dd/MM/yyyy' }}</td>
-            <td>{{ finance.description }}</td>
-            <td>{{ finance.amount | currency:'USD' }}</td>
-            <td>{{ finance.type }}</td>
+          <tr *ngFor="let finance of finances" [ngClass]="{'income-row': finance.type === 'income', 'expense-row': finance.type === 'expense'}">
+            <td class="editable-cell">
+              <span *ngIf="!finance.editingDate">{{ finance.date | date:'dd/MM/yyyy' }}</span>
+              <input *ngIf="finance.editingDate" type="date" [(ngModel)]="finance.date" (blur)="updateFinance(finance); finance.editingDate = false" class="editable-input">
+              <button *ngIf="!finance.editingDate" (click)="finance.editingDate = true" class="edit-date-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20px" height="20px">
+                  <path d="M19 4h-2V2h-2v2H9V2H7v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/>
+                </svg>
+              </button>
+            </td>
+            <td class="editable-cell">
+              <textarea [(ngModel)]="finance.description" (blur)="updateFinance(finance)" class="editable-input" rows="1"></textarea>
+            </td>
+            <td class="editable-cell">
+              <span *ngIf="!finance.editingAmount">{{ finance.amount | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+              <input *ngIf="finance.editingAmount" type="number" [(ngModel)]="finance.amount" (blur)="updateFinance(finance); finance.editingAmount = false" class="editable-input">
+              <button *ngIf="!finance.editingAmount" (click)="onEditAmount(finance)" class="edit-amount-button">Edit</button>
+            </td>
           </tr>
           <tr *ngIf="finances.length === 0">
-            <td colspan="4">No finance entries yet.</td>
+            <td colspan="3">No finance entries yet.</td>
           </tr>
         </tbody>
       </table>

@@ -24,6 +24,15 @@ export interface Finance {
   type: 'income' | 'expense';
 }
 
+export interface FinanceUpdateDto {
+  id?: number;
+  userId?: number;
+  date: string; // Date as ISO string for backend
+  description: string;
+  amount: number;
+  type: 'income' | 'expense';
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -80,7 +89,7 @@ export class ApiService {
     return this.http.post<Finance>(`${this.baseUrl}/Finances`, finance, { headers: this.getAuthHeaders() });
   }
 
-  updateFinance(id: number, finance: Finance): Observable<any> {
+  updateFinance(id: number, finance: FinanceUpdateDto): Observable<any> {
     return this.http.put(`${this.baseUrl}/Finances/${id}`, finance, { headers: this.getAuthHeaders() });
   }
 

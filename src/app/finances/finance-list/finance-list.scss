@@ -1,46 +1,62 @@
-.finance-content-wrapper {
-  display: flex;
-  gap: 20px; /* Space between the form and the table */
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
-}
-
-.add-finance-section,
-.finance-list-section {
-  flex: 1; /* Distribute space equally */
-  min-width: 300px; /* Minimum width before wrapping */
-}
-
 .finance-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-}
 
-.finance-table th,
-.finance-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
 
-.finance-table th {
-  background-color: #f2f2f2;
-}
+  th {
+    background-color: #f2f2f2;
+  }
 
-.form-group {
-  margin-bottom: 10px;
-}
+  .editable-cell {
+    position: relative;
+    white-space: nowrap; /* Prevent text wrapping in display mode */
+    overflow: hidden; /* Hide overflowing content */
 
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-}
+    .editable-input {
+      position: absolute; /* Take out of flow, won't expand TD */
+      top: 0;
+      left: 0;
+      width: 50%; /* 50% of the parent .editable-cell */
+      height: 100%; /* Fill height of cell */
+      padding: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box; /* Include padding/border in width/height */
+      font-size: inherit;
+      font-family: inherit;
 
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
+      /* Hide spin buttons for number input */
+      &[type="number"]::-webkit-inner-spin-button,
+      &[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      &[type="number"] {
+        -moz-appearance: textfield;
+      }
+    }
+
+    textarea.editable-input {
+      position: static; /* Textarea should be in flow to expand vertically */
+      width: 100%; /* Fill cell width */
+      min-height: 24px; /* Adjust as needed for single line */
+      resize: vertical;
+    }
+  }
+
+  .income-row {
+    background-color: #e6ffe6; /* Light green */
+  }
+
+  .expense-row {
+    background-color: #ffe6e6; /* Light red */
+  }
 }
 
 .error-message {
@@ -48,16 +64,99 @@
   margin-bottom: 10px;
 }
 
-.add-button {
-  background-color: #4CAF50; /* Green */
+.settings-button {
+  background-color: #007bff;
   color: white;
   padding: 10px 15px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   margin-bottom: 20px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 }
 
-.add-button:hover {
-  background-color: #45a049;
+.finance-content-wrapper {
+  display: flex;
+  gap: 20px;
+
+  .add-finance-section {
+    flex: 0.5; /* Half width */
+  }
+
+  .finance-list-section {
+    flex: 1; /* Fill remaining width */
+  }
+}
+
+.add-finance-section, .finance-list-section {
+  padding: 20px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  input[type="date"],
+  input[type="text"],
+  input[type="number"],
+  select {
+    width: 100%;
+    padding: 8px; /* Revert to original padding */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  /* Specific style for description textarea in add form */
+  textarea#description {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    min-height: 72px; /* Approx. 3 lines of text */
+    resize: vertical; /* Allow vertical resizing */
+  }
+}
+
+button[type="submit"] {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #218838;
+  }
+}
+
+.edit-date-button,
+.edit-amount-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 5px;
+  vertical-align: middle;
+
+  svg {
+    color: #007bff; /* Icon color */
+  }
+
+  &:hover svg {
+    color: #0056b3;
+  }
 }

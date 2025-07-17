@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ApiService, Finance } from '../../services/api';
+import { ApiService, Finance, FinanceUpdateDto } from '../../services/api';
 import { FixedFinancesService, FixedFinance } from '../../services/fixed-finances.service';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
+
+type EditableFinance = Finance & { editingDate?: boolean, editingAmount?: boolean };
 
 @Component({
   selector: 'app-finance-list',
@@ -14,7 +16,7 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./finance-list.scss']
 })
 export class FinanceListComponent implements OnInit {
-  finances: Finance[] = [];
+  finances: EditableFinance[] = [];
   newFinance: Finance = { date: new Date(), description: '', amount: 0, type: 'expense' };
   errorMessage: string = '';
   
@@ -31,17 +33,20 @@ export class FinanceListComponent implements OnInit {
       fixedFinances: this.fixedFinancesService.getFixedFinances()
     }).subscribe({
       next: (data) => {
-        const regularFinances = data.finances;
+        const regularFinances = data.finances.map(f => ({ ...f, editingDate: false, editingAmount: false }));
         const fixedFinancesAsRegular = data.fixedFinances.map(ff => ({
           id: ff.id,
           userId: ff.userId,
           date: new Date(), // Use current date for display
           description: ff.description + ' (Fixed)',
           amount: ff.amount,
-          type: ff.type
+          type: ff.type,
+          editingDate: false,
+          editingAmount: false
         } as Finance));
 
-        this.finances = [...regularFinances, ...fixedFinancesAsRegular].sort((a, b) => a.date.getTime() - b.date.getTime());
+        this.finances = [...regularFinances, ...fixedFinancesAsRegular].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        console.log('Loaded Finances:', this.finances); // Add this line
       },
       error: (err) => {
         console.error('Error loading finances:', err);
@@ -57,7 +62,7 @@ export class FinanceListComponent implements OnInit {
   addFinance(): void {
     this.apiService.createFinance(this.newFinance).subscribe({
       next: (finance) => {
-        this.finances.push(finance);
+        this.finances.push({ ...finance, editingDate: false, editingAmount: false });
         this.newFinance = { date: new Date(), description: '', amount: 0, type: 'expense' }; // Reset form
         this.errorMessage = '';
       },
@@ -66,6 +71,32 @@ export class FinanceListComponent implements OnInit {
         this.errorMessage = 'Failed to add finance.';
       }
     });
+  }
+
+  updateFinance(finance: EditableFinance): void {
+    if (finance.id) {
+      // Ensure date is in correct format before sending to backend
+      const financeToUpdate: FinanceUpdateDto = { 
+        ...finance, 
+        date: new Date(finance.date).toISOString(),
+        amount: parseFloat(finance.amount.toFixed(2)) // Round to 2 decimal places
+      };
+      this.apiService.updateFinance(finance.id, financeToUpdate).subscribe({
+        next: () => {
+          console.log('Finance updated successfully!', finance);
+          this.errorMessage = '';
+        },
+        error: (err) => {
+          console.error('Error updating finance:', err);
+          this.errorMessage = 'Failed to update finance.';
+        }
+      });
+    }
+  }
+
+  onEditAmount(finance: EditableFinance): void {
+    finance.editingAmount = true;
+    finance.amount = parseFloat(finance.amount.toFixed(2));
   }
 
   goToFixedFinancesSettings(): void {
