@@ -43,7 +43,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let finance of finances">
-            <td>{{ finance.date | date:'shortDate' }}</td>
+            <td>{{ finance.date | date:'dd/MM/yyyy' }}</td>
             <td>{{ finance.description }}</td>
             <td>{{ finance.amount | currency:'USD' }}</td>
             <td>{{ finance.type }}</td>

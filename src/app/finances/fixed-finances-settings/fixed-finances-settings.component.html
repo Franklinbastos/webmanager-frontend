@@ -5,6 +5,8 @@
   <form [formGroup]="fixedFinanceForm" (ngSubmit)="onSubmit()" class="fixed-finance-form">
     <input type="text" formControlName="description" placeholder="Description">
     <input type="number" formControlName="amount" placeholder="Amount">
+    <input type="number" formControlName="numberOfMonths" placeholder="Number of Months" min="1">
+    <input type="number" formControlName="billingDay" placeholder="Billing Day (1-31)" min="1" max="31">
     <select formControlName="type">
       <option value="income">Income</option>
       <option value="expense">Expense</option>
@@ -17,12 +19,16 @@
     <button type="button" (click)="resetForm()" *ngIf="isEditing">Cancel</button>
   </form>
 
+  <button (click)="generateRecurrentFinances()">Generate Recurrent Finances</button>
+
   <table class="fixed-finances-table">
     <thead>
       <tr>
         <th>Description</th>
         <th>Amount</th>
         <th>Type</th>
+        <th>Months</th>
+        <th>Day</th>
         <th>Active</th>
         <th>Actions</th>
       </tr>
@@ -32,6 +38,8 @@
         <td>{{ fixedFinance.description }}</td>
         <td>{{ fixedFinance.amount | currency:'BRL' }}</td>
         <td>{{ fixedFinance.type }}</td>
+        <td>{{ fixedFinance.numberOfMonths }}</td>
+        <td>{{ fixedFinance.billingDay }}</td>
         <td>{{ fixedFinance.isActive ? 'Yes' : 'No' }}</td>
         <td>
           <button (click)="editFixedFinance(fixedFinance)">Edit</button>

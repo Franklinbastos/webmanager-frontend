@@ -22,6 +22,7 @@
   align-items: center;
   padding: 0 20px;
   z-index: 1000;
+  justify-content: space-between; /* Adicionado para alinhar itens */
 }
 
 /* Remove .main-header.sidenav-open to prevent header shift */
@@ -36,6 +37,50 @@
 
 .page-title {
   margin-left: 20px; /* Add some space after the hamburger */
+  flex-grow: 1; /* Para empurrar o perfil para a direita */
+}
+
+.profile-container {
+  position: relative;
+}
+
+.profile-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #555; /* Cor de fundo do círculo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.profile-menu {
+  position: absolute;
+  top: 50px; /* Abaixo do círculo */
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  z-index: 1001;
+}
+
+.logout-button {
+  background-color: #f44336; /* Vermelho */
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.logout-button:hover {
+  background-color: #d32f2f;
 }
 
 .content-area {

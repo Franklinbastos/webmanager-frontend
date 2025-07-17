@@ -22,6 +22,8 @@ export class FixedFinancesSettingsComponent implements OnInit {
       description: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(0.01)]],
       type: ['expense', Validators.required],
+      numberOfMonths: [1, [Validators.required, Validators.min(1)]],
+      billingDay: [1, [Validators.required, Validators.min(1), Validators.max(31)]],
       isActive: [true]
     });
   }
@@ -65,9 +67,21 @@ export class FixedFinancesSettingsComponent implements OnInit {
     });
   }
 
+  generateRecurrentFinances(): void {
+    this.fixedFinancesService.generateRecurrentFinances().subscribe({
+      next: (response) => {
+        console.log(response.message);
+        this.loadFixedFinances(); // Reload fixed finances after generation
+      },
+      error: (err) => {
+        console.error('Error generating recurrent finances:', err);
+      }
+    });
+  }
+
   resetForm(): void {
     this.isEditing = false;
     this.currentFixedFinanceId = null;
-    this.fixedFinanceForm.reset({ type: 'expense', isActive: true });
+    this.fixedFinanceForm.reset({ type: 'expense', isActive: true, numberOfMonths: 1, billingDay: 1 });
   }
 }

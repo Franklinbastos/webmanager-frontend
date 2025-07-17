@@ -14,6 +14,7 @@ import { filter, map } from 'rxjs/operators';
 export class MainLayoutComponent {
   isSidenavOpen = false;
   pageTitle = '';
+  isProfileMenuOpen = false;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
     this.router.events.pipe(
@@ -29,5 +30,14 @@ export class MainLayoutComponent {
 
   toggleSidenav() {
     this.isSidenavOpen = !this.isSidenavOpen;
+  }
+
+  toggleProfileMenu() {
+    this.isProfileMenuOpen = !this.isProfileMenuOpen;
+  }
+
+  logout(): void {
+    localStorage.removeItem('authToken');
+    this.router.navigate(['/login']);
   }
 }

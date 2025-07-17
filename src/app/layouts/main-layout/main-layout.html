@@ -7,6 +7,15 @@
         &#9776; <!-- Hamburger Icon -->
       </button>
       <h1 class="page-title">{{ pageTitle }}</h1>
+      <div class="profile-container">
+        <div class="profile-circle" (click)="toggleProfileMenu()">
+          <!-- You can add an icon or initial here, e.g., <span class="initial">U</span> -->
+          U
+        </div>
+        <div class="profile-menu" *ngIf="isProfileMenuOpen">
+          <button class="logout-button" (click)="logout()">Sair</button>
+        </div>
+      </div>
     </header>
 
     <main class="content-area">

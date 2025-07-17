@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, Finance } from '../../services/api';
+import { FixedFinancesService, FixedFinance } from '../../services/fixed-finances.service';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-finance-list',
@@ -17,21 +19,33 @@ export class FinanceListComponent implements OnInit {
   errorMessage: string = '';
   
 
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor(private apiService: ApiService, private router: Router, private fixedFinancesService: FixedFinancesService) { }
 
   ngOnInit(): void {
-    this.loadFinances();
+    this.loadAllFinances();
   }
 
-  loadFinances(): void {
-    this.apiService.getFinances().subscribe({
+  loadAllFinances(): void {
+    forkJoin({
+      finances: this.apiService.getFinances(),
+      fixedFinances: this.fixedFinancesService.getFixedFinances()
+    }).subscribe({
       next: (data) => {
-        this.finances = data;
+        const regularFinances = data.finances;
+        const fixedFinancesAsRegular = data.fixedFinances.map(ff => ({
+          id: ff.id,
+          userId: ff.userId,
+          date: new Date(), // Use current date for display
+          description: ff.description + ' (Fixed)',
+          amount: ff.amount,
+          type: ff.type
+        } as Finance));
+
+        this.finances = [...regularFinances, ...fixedFinancesAsRegular].sort((a, b) => a.date.getTime() - b.date.getTime());
       },
       error: (err) => {
         console.error('Error loading finances:', err);
         this.errorMessage = 'Failed to load finances. Please try logging in again.';
-        // Optionally, redirect to login if token is invalid
         if (err.status === 401 || err.status === 403) {
           localStorage.removeItem('authToken');
           this.router.navigate(['/login']);

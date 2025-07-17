@@ -9,6 +9,8 @@ export interface FixedFinance {
   description: string;
   amount: number;
   type: 'income' | 'expense';
+  numberOfMonths?: number;
+  billingDay?: number;
   isActive: boolean;
 }
 
@@ -46,5 +48,9 @@ export class FixedFinancesService {
 
   deleteFixedFinance(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`, { headers: this.getAuthHeaders() });
+  }
+
+  generateRecurrentFinances(): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.baseUrl}/generate-recurrent`, {}, { headers: this.getAuthHeaders() });
   }
 }
