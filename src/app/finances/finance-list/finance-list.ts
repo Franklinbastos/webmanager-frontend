@@ -15,7 +15,7 @@ export class FinanceListComponent implements OnInit {
   finances: Finance[] = [];
   newFinance: Finance = { date: new Date(), description: '', amount: 0, type: 'expense' };
   errorMessage: string = '';
-  showAddForm: boolean = false;
+  
 
   constructor(private apiService: ApiService, private router: Router) { }
 
@@ -54,9 +54,7 @@ export class FinanceListComponent implements OnInit {
     });
   }
 
-  
-
-  toggleAddForm(): void {
-    this.showAddForm = !this.showAddForm;
+  goToFixedFinancesSettings(): void {
+    this.router.navigate(['/app/finances/fixed-settings']);
   }
 }

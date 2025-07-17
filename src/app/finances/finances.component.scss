@@ -1,0 +1,33 @@
+
+.finances-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.finances-nav {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+
+  a {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+    border-bottom: 2px solid transparent;
+
+    &.active {
+      border-bottom-color: #007bff;
+      font-weight: bold;
+    }
+  }
+}
+
+.finances-content {
+  padding: 20px;
+  margin-top: 20px;
+  margin-left: 20px;
+  width: 1200px; 
+  height: 800px;
+  overflow: auto;
+  border: 1px solid #eee;
+}

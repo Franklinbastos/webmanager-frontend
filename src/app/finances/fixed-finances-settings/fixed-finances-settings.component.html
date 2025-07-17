@@ -1,0 +1,43 @@
+
+<div class="container">
+  <h2>Fixed Finances Settings</h2>
+
+  <form [formGroup]="fixedFinanceForm" (ngSubmit)="onSubmit()" class="fixed-finance-form">
+    <input type="text" formControlName="description" placeholder="Description">
+    <input type="number" formControlName="amount" placeholder="Amount">
+    <select formControlName="type">
+      <option value="income">Income</option>
+      <option value="expense">Expense</option>
+    </select>
+    <label>
+      <input type="checkbox" formControlName="isActive">
+      Active
+    </label>
+    <button type="submit" [disabled]="!fixedFinanceForm.valid">{{ isEditing ? 'Update' : 'Add' }} Fixed Entry</button>
+    <button type="button" (click)="resetForm()" *ngIf="isEditing">Cancel</button>
+  </form>
+
+  <table class="fixed-finances-table">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Type</th>
+        <th>Active</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let fixedFinance of fixedFinances">
+        <td>{{ fixedFinance.description }}</td>
+        <td>{{ fixedFinance.amount | currency:'BRL' }}</td>
+        <td>{{ fixedFinance.type }}</td>
+        <td>{{ fixedFinance.isActive ? 'Yes' : 'No' }}</td>
+        <td>
+          <button (click)="editFixedFinance(fixedFinance)">Edit</button>
+          <button (click)="deleteFixedFinance(fixedFinance.id!)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

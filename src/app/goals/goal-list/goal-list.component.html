@@ -1,0 +1,40 @@
+
+<div class="container">
+  <h2>Shopping Goals</h2>
+
+  <form [formGroup]="goalForm" (ngSubmit)="onSubmit()" class="goal-form">
+    <input type="text" formControlName="item" placeholder="Item">
+    <input type="number" formControlName="value" placeholder="Value">
+    <input type="text" formControlName="description" placeholder="Description">
+    <label>
+      <input type="checkbox" formControlName="completed">
+      Completed
+    </label>
+    <button type="submit" [disabled]="!goalForm.valid">{{ isEditing ? 'Update' : 'Add' }} Goal</button>
+    <button type="button" (click)="resetForm()" *ngIf="isEditing">Cancel</button>
+  </form>
+
+  <table class="goals-table">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Value</th>
+        <th>Description</th>
+        <th>Completed</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let goal of goals">
+        <td>{{ goal.item }}</td>
+        <td>{{ goal.value | currency:'BRL' }}</td>
+        <td>{{ goal.description }}</td>
+        <td>{{ goal.completed ? 'Yes' : 'No' }}</td>
+        <td>
+          <button (click)="editGoal(goal)">Edit</button>
+          <button (click)="deleteGoal(goal.id!)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

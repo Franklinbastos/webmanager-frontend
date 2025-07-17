@@ -19,11 +19,8 @@ export class MainLayoutComponent {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(() => {
-        let child = this.activatedRoute.firstChild;
-        while (child?.firstChild) {
-          child = child.firstChild;
-        }
-        return child?.snapshot.data['title'] || '';
+        const childRoute = this.activatedRoute.firstChild;
+        return childRoute?.snapshot.data['title'] || '';
       })
     ).subscribe((title: string) => {
       this.pageTitle = title;

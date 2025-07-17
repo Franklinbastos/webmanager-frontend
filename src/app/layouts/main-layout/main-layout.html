@@ -1,5 +1,5 @@
 <div class="main-container">
-  <app-sidenav [isOpen]="isSidenavOpen"></app-sidenav>
+  <app-sidenav [isOpen]="isSidenavOpen" (closeSidenav)="toggleSidenav()"></app-sidenav>
 
   <div class="main-content" [class.sidenav-open]="isSidenavOpen">
     <header class="main-header">

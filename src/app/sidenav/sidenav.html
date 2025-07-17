@@ -1,6 +1,12 @@
 <div class="sidenav" [class.open]="isOpen">
+  <div class="sidenav-header">
+    <button class="close-button" (click)="onCloseClick()">
+      &times; <!-- 'X' character -->
+    </button>
+  </div>
   <nav class="sidenav-nav">
-    <a routerLink="/app/finances" routerLinkActive="active" class="nav-link">Finanças</a>
+    <a routerLink="/app/home" routerLinkActive="active" class="nav-link" (click)="onCloseClick()">Home</a>
+    <a routerLink="/app/finances" routerLinkActive="active" class="nav-link" (click)="onCloseClick()">Finanças</a>
     <!-- Add more links here as features are added -->
   </nav>
 </div>

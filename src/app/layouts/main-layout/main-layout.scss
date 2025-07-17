@@ -8,9 +8,7 @@
   margin-left: 0;
 }
 
-.main-content.sidenav-open {
-  margin-left: 250px; /* Same as sidenav width */
-}
+/* Remove .main-content.sidenav-open to prevent content shift */
 
 .main-header {
   position: fixed;
@@ -26,9 +24,7 @@
   z-index: 1000;
 }
 
-.main-header.sidenav-open {
-  left: 250px;
-}
+/* Remove .main-header.sidenav-open to prevent header shift */
 
 .menu-button {
   background: none;
@@ -39,7 +35,7 @@
 }
 
 .page-title {
-  margin: 0 auto;
+  margin-left: 20px; /* Add some space after the hamburger */
 }
 
 .content-area {
