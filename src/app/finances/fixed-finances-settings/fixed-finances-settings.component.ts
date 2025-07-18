@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { FixedFinance, FixedFinancesService } from '../../services/fixed-finances.service';
+import { FinanceUpdateService } from '../../services/finance-update.service';
 
 @Component({
   selector: 'app-fixed-finances-settings',
@@ -17,7 +18,7 @@ export class FixedFinancesSettingsComponent implements OnInit {
   isEditing = false;
   currentFixedFinanceId: number | null = null;
 
-  constructor(private fixedFinancesService: FixedFinancesService, private fb: FormBuilder) {
+  constructor(private fixedFinancesService: FixedFinancesService, private fb: FormBuilder, private financeUpdateService: FinanceUpdateService) {
     this.fixedFinanceForm = this.fb.group({
       description: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(0.01)]],
@@ -45,6 +46,7 @@ export class FixedFinancesSettingsComponent implements OnInit {
         this.fixedFinancesService.updateFixedFinance(this.currentFixedFinanceId, { ...fixedFinanceData, id: this.currentFixedFinanceId }).subscribe(() => {
           this.loadFixedFinances();
           this.resetForm();
+          this.financeUpdateService.triggerFinanceUpdate(); // Trigger update in finance list
         });
       } else {
         this.fixedFinancesService.createFixedFinance(fixedFinanceData).subscribe(() => {

@@ -5,7 +5,7 @@
 
   th, td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 4px; /* Reduced padding */
     text-align: left;
   }
 
@@ -16,14 +16,11 @@
   .editable-cell {
     position: relative;
     white-space: nowrap; /* Prevent text wrapping in display mode */
-    overflow: hidden; /* Hide overflowing content */
 
     .editable-input {
-      position: absolute; /* Take out of flow, won't expand TD */
-      top: 0;
-      left: 0;
-      width: 50%; /* 50% of the parent .editable-cell */
-      height: 100%; /* Fill height of cell */
+      width: 100%; /* Make it fill the cell width */
+      height: auto; /* Let height be determined by content/padding/font-size */
+      min-height: 24px; /* Ensure a minimum height for all editable inputs */
       padding: 4px;
       border: 1px solid #ccc;
       border-radius: 4px;
@@ -149,7 +146,7 @@ button[type="submit"] {
   border: none;
   cursor: pointer;
   padding: 0;
-  margin-left: 5px;
+  margin-left: 0; /* Removed extra space */
   vertical-align: middle;
 
   svg {

@@ -37,17 +37,11 @@ export interface FinanceUpdateDto {
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:5229';
+  private baseUrl = 'http://localhost:5230';
 
   constructor(private http: HttpClient) {}
 
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('authToken');
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-  }
+  
 
   // --- User Endpoints ---
 
@@ -60,40 +54,40 @@ export class ApiService {
   }
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.baseUrl}/Users`, { headers: this.getAuthHeaders() });
+    return this.http.get<User[]>(`${this.baseUrl}/Users`, {});
   }
 
   getUserById(id: number): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/Users/${id}`, { headers: this.getAuthHeaders() });
+    return this.http.get<User>(`${this.baseUrl}/Users/${id}`, {});
   }
 
   updateUser(id: number, user: User): Observable<any> {
-    return this.http.put(`${this.baseUrl}/Users/${id}`, user, { headers: this.getAuthHeaders() });
+    return this.http.put(`${this.baseUrl}/Users/${id}`, user, {});
   }
 
   deleteUser(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/Users/${id}`, { headers: this.getAuthHeaders() });
+    return this.http.delete(`${this.baseUrl}/Users/${id}`, {});
   }
 
   // --- Finance Endpoints ---
 
   getFinances(): Observable<Finance[]> {
-    return this.http.get<Finance[]>(`${this.baseUrl}/Finances`, { headers: this.getAuthHeaders() });
+    return this.http.get<Finance[]>(`${this.baseUrl}/Finances`, {});
   }
 
   getFinanceById(id: number): Observable<Finance> {
-    return this.http.get<Finance>(`${this.baseUrl}/Finances/${id}`, { headers: this.getAuthHeaders() });
+    return this.http.get<Finance>(`${this.baseUrl}/Finances/${id}`, {});
   }
 
   createFinance(finance: Finance): Observable<Finance> {
-    return this.http.post<Finance>(`${this.baseUrl}/Finances`, finance, { headers: this.getAuthHeaders() });
+    return this.http.post<Finance>(`${this.baseUrl}/Finances`, finance, {});
   }
 
   updateFinance(id: number, finance: FinanceUpdateDto): Observable<any> {
-    return this.http.put(`${this.baseUrl}/Finances/${id}`, finance, { headers: this.getAuthHeaders() });
+    return this.http.put(`${this.baseUrl}/Finances/${id}`, finance, {});
   }
 
   deleteFinance(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/Finances/${id}`, { headers: this.getAuthHeaders() });
+    return this.http.delete(`${this.baseUrl}/Finances/${id}`, {});
   }
 }

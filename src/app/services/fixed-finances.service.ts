@@ -18,7 +18,7 @@ export interface FixedFinance {
   providedIn: 'root'
 })
 export class FixedFinancesService {
-  private baseUrl = 'http://localhost:5229/api/FixedFinances';
+  private baseUrl = 'http://localhost:5230/api/FixedFinances';
 
   constructor(private http: HttpClient) {}
 

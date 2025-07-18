@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, Finance, FinanceUpdateDto } from '../../services/api';
 import { FixedFinancesService, FixedFinance } from '../../services/fixed-finances.service';
+import { FinanceUpdateService } from '../../services/finance-update.service';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 
@@ -21,10 +22,13 @@ export class FinanceListComponent implements OnInit {
   errorMessage: string = '';
   
 
-  constructor(private apiService: ApiService, private router: Router, private fixedFinancesService: FixedFinancesService) { }
+  constructor(private apiService: ApiService, private router: Router, private fixedFinancesService: FixedFinancesService, private financeUpdateService: FinanceUpdateService) { }
 
   ngOnInit(): void {
     this.loadAllFinances();
+    this.financeUpdateService.financeUpdated$.subscribe(() => {
+      this.loadAllFinances();
+    });
   }
 
   loadAllFinances(): void {
@@ -33,19 +37,7 @@ export class FinanceListComponent implements OnInit {
       fixedFinances: this.fixedFinancesService.getFixedFinances()
     }).subscribe({
       next: (data) => {
-        const regularFinances = data.finances.map(f => ({ ...f, editingDate: false, editingAmount: false }));
-        const fixedFinancesAsRegular = data.fixedFinances.map(ff => ({
-          id: ff.id,
-          userId: ff.userId,
-          date: new Date(), // Use current date for display
-          description: ff.description + ' (Fixed)',
-          amount: ff.amount,
-          type: ff.type,
-          editingDate: false,
-          editingAmount: false
-        } as Finance));
-
-        this.finances = [...regularFinances, ...fixedFinancesAsRegular].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        this.finances = data.finances.map(f => ({ ...f, editingDate: false, editingAmount: false })).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         console.log('Loaded Finances:', this.finances); // Add this line
       },
       error: (err) => {

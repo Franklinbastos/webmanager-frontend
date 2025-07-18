@@ -16,35 +16,29 @@ export interface Goal {
   providedIn: 'root'
 })
 export class GoalsService {
-  private baseUrl = 'http://localhost:5229/api/Goals';
+  private baseUrl = 'http://localhost:5230/api/Goals';
 
   constructor(private http: HttpClient) {}
 
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('authToken');
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-  }
+  
 
   getGoals(): Observable<Goal[]> {
-    return this.http.get<Goal[]>(this.baseUrl, { headers: this.getAuthHeaders() });
+    return this.http.get<Goal[]>(this.baseUrl, {});
   }
 
   getGoalById(id: number): Observable<Goal> {
-    return this.http.get<Goal>(`${this.baseUrl}/${id}`, { headers: this.getAuthHeaders() });
+    return this.http.get<Goal>(`${this.baseUrl}/${id}`, {});
   }
 
   createGoal(goal: Goal): Observable<Goal> {
-    return this.http.post<Goal>(this.baseUrl, goal, { headers: this.getAuthHeaders() });
+    return this.http.post<Goal>(this.baseUrl, goal, {});
   }
 
   updateGoal(id: number, goal: Goal): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}`, goal, { headers: this.getAuthHeaders() });
+    return this.http.put(`${this.baseUrl}/${id}`, goal, {});
   }
 
   deleteGoal(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`, { headers: this.getAuthHeaders() });
+    return this.http.delete(`${this.baseUrl}/${id}`, {});
   }
 }
