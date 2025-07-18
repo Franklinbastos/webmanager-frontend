@@ -38,6 +38,7 @@
             <th>Date</th>
             <th>Description</th>
             <th>Amount</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -58,6 +59,9 @@
               <span *ngIf="!finance.editingAmount">{{ finance.amount | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
               <input *ngIf="finance.editingAmount" type="number" [(ngModel)]="finance.amount" (blur)="updateFinance(finance); finance.editingAmount = false" class="editable-input">
               <button *ngIf="!finance.editingAmount" (click)="onEditAmount(finance)" class="edit-amount-button">Edit</button>
+            </td>
+            <td>
+              <button (click)="deleteFinance(finance.id)" class="delete-button">Delete</button>
             </td>
           </tr>
           <tr *ngIf="finances.length === 0">

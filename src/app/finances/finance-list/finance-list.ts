@@ -94,4 +94,38 @@ export class FinanceListComponent implements OnInit {
   goToFixedFinancesSettings(): void {
     this.router.navigate(['/app/finances/fixed-settings']);
   }
+
+  deleteFinance(id: number | undefined): void {
+    if (id === undefined) {
+      console.error('Cannot delete finance: ID is undefined.');
+      return;
+    }
+    if (confirm('Are you sure you want to delete this finance entry?')) {
+      this.apiService.deleteFinance(id).subscribe({
+        next: () => {
+          this.finances = this.finances.filter(f => f.id !== id);
+          this.errorMessage = '';
+        },
+        error: (err) => {
+          console.error('Error deleting finance:', err);
+          this.errorMessage = 'Failed to delete finance.';
+        }
+      });
+    }
+  }
+
+  deleteFinance(id: number): void {
+    if (confirm('Are you sure you want to delete this finance entry?')) {
+      this.apiService.deleteFinance(id).subscribe({
+        next: () => {
+          this.finances = this.finances.filter(f => f.id !== id);
+          this.errorMessage = '';
+        },
+        error: (err) => {
+          console.error('Error deleting finance:', err);
+          this.errorMessage = 'Failed to delete finance.';
+        }
+      });
+    }
+  }
 }
